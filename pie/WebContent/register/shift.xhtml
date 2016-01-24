@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title><h:outputText value="#{message.label_titulo_pagina_turno}"></h:outputText></title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+            
+            <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+            <h:outputStylesheet library="css" name="newtheme.css"></h:outputStylesheet>
+            
+            <p:layout fullPage="true">
+ 
+                <p:layoutUnit position="north" size="105" >
+                    <h:form id="formMenu" onkeypress="if (event.keyCode == 13) { return false; }"> 
+
+                        <h:graphicImage value="/resources/images/logo-easa.png" height="50" ></h:graphicImage>
+
+                        <p:menubar>
+                                <p:submenu label="Cadastro">                        
+                                    <p:menuitem value="Usuário" url="/register/user.jsf" />                        
+                                    <p:menuitem value="Projeto" url="/register/project.jsf" />
+                                    <p:menuitem value="Contrato" url="/register/contract.jsf" />
+                                    <p:menuitem value="Funcionário" url="/register/worker.jsf" />
+                                    <p:menuitem value="Cliente" url="/register/customer.jsf" />                       
+                                    <p:menuitem value="Turno" url="/register/shift.jsf" />    
+                                    <p:menuitem value="Cargo" url="/register/role.jsf" />    
+                                    <p:menuitem value="Tipo Embarcação" url="/register/ship.jsf" /> 
+                                </p:submenu>
+
+                                <p:menuitem value="Importações de Dados" url="/import/import.jsf" />                         
+
+                                <p:submenu label="Operações">
+                                    <p:menuitem value="Projetos" url="/operation/operation-project.jsf" />                        
+                                </p:submenu>
+
+                                <p:submenu label="Relatórios">
+
+                                </p:submenu>    
+                                
+                                <p:submenu label="Outros Cadastros">                        
+                                    <p:menuitem value="Atividades" url="/register/activite.jsf" />                        
+                                    <p:menuitem value="Elemento" url="/register/element.jsf" />                        
+                                    <p:menuitem value="Peça" url="/register/part.jsf" />
+                                    <p:menuitem value="Espaço" url="/register/space.jsf" />
+                                    <p:menuitem value="Bordo" url="/register/edge.jsf" />
+                                    <p:menuitem value="Posição" url="/register/position.jsf" />                       
+                                    <p:menuitem value="Região" url="/register/region.jsf" />    
+                                    <p:menuitem value="Tipo Solda" url="/register/weldingType.jsf" />    
+                                    <p:menuitem value="Serviço de Solda" url="/register/weldingService.jsf" /> 
+                                </p:submenu>
+
+                                <f:facet name="options">
+                                    <p:commandButton immediate="true" id="btnLogout" action="#{loginBean.doLogout()}" value="Logout" icon="ui-icon-extlink" />
+                                </f:facet>
+                        </p:menubar>
+
+                    </h:form>                        
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="150" header="#{message.label_header_layout_unit_left}" resizable="true" closable="true" collapsible="true">
+
+                </p:layoutUnit>
+
+                <!--
+
+                <p:layoutUnit position="east" size="240" header="#{message.label_header_layout_unit_right}" resizable="true" closable="true" collapsible="true" effect="drop">
+
+                    <h:form id="formEast" onkeypress="if (event.keyCode == 13) { return false; }">
+                        <p:calendar id="inline" mode="inline" />
+                    </h:form>   
+
+                </p:layoutUnit>
+
+                -->
+
+                <p:layoutUnit position="center">
+                    
+                    <h:form id="form" onkeypress="if (event.keyCode == 13) { return false; }">               
+                               
+                        <p:growl id="msgsGrowl" showDetail="true" autoUpdate="true" for="msgsGrowl"/>
+
+                        <c:set var="shift" value="#{shiftBean.turno}" />
+                        <c:set var="controller" value="#{shiftBean}" />
+
+                        <!-- Início Painel Cadastro do Turno -->
+
+                        <p:panel id="pnlCadastroTurnos" header="#{message.label_header_pnl_cadastro_turno}" style="margin-bottom:20px;">
+
+                            <p:focus context="pnlCadastroTurnos"/>
+
+                            <h:panelGrid id="pnlGridCadastroTurnos" columns="3" cellpadding="10" >
+
+                                <p:outputLabel id="lblDescricao" for="textDescricao" value="#{message.label_descricao}"></p:outputLabel>
+                                <p:inputText id="textDescricao" value="#{shiftBean.turno.descricao}" required="true" requiredMessage="#{message.label_required_descricao_turno}"></p:inputText>                        
+                                <p:message for="textDescricao" showDetail="true" />                     
+
+                                <p:outputLabel id="lblQtdMinutosParadas" for="textMinutosParadas" value="#{message.label_minuto_parada}"></p:outputLabel>
+                                <p:inputText id="textMinutosParadas" value="#{shiftBean.turno.qtdMinutosParadas}" required="true" requiredMessage="#{message.label_required_minuto_parada}">
+                                    <f:validateLongRange minimum="1" maximum="120"></f:validateLongRange>   
+                                    <p:ajax update="msgQtdMinutosParados" event="keyup" />
+                                </p:inputText>                        
+                                <p:message id="msgQtdMinutosParados" for="textMinutosParadas" showDetail="true" />  
+
+                            </h:panelGrid>
+                            
+                        </p:panel>
+                        
+                        <p:toolbar id="toolbarCadastroTurno"> 
+                            
+                            <f:facet name="left">
+                                <p:commandButton id="btnCadastrarTurno" value="#{message.label_botao_inserir_turno}" action="#{shiftBean.saveShift(shift)}" update="pnlCadastroTurnos, dataTableTurnos, toolbarCadastroTurno">
+                                </p:commandButton> 
+                            </f:facet>
+ 
+                            <f:facet name="right">                                
+                                <p:commandButton  value="#{message.label_botao_limpar}"  disabled="#{shiftBean.turno.id != null}">
+                                    <!-- <f:ajax render="@all" resetValues="true" />  -->
+                                    <p:ajax update="pnlCadastroTurnos" resetValues="true" /> 
+                                    <!-- actionListener="#{shiftBean.reset()}" ajax="false" immediate="true" <p:resetInput target="pnlGridCadastroTurnos"></p:resetInput> -->
+                                </p:commandButton>   
+                            </f:facet>
+
+                        </p:toolbar>
+                        
+                        <f:verbatim>                            
+                            <br />                            
+                        </f:verbatim>
+
+                        <p:dataTable emptyMessage="#{message.label_sem_registro}" id="dataTableTurnos" var="turno" value="#{shiftBean.turnos}"
+                                     rows="10"
+                                     paginator="true" 
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                                     rowsPerPageTemplate="5,10,15" 
+                                     >
+                            
+                            <f:facet name="{Exporters}">
+                                <h:commandLink>
+                                    <p:graphicImage name="/resources/images/excel.png" width="24"/>
+                                    <p:dataExporter type="xls" target="dataTableTurnos" fileName="export" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/resources/images/pdf.png" width="24"/>
+                                    <p:dataExporter type="pdf" target="dataTableTurnos" fileName="export"/>
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/resources/images/csv.png" width="24"/>
+                                    <p:dataExporter type="csv" target="dataTableTurnos" fileName="export" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/resources/images/xml.png" width="24"/>
+                                    <p:dataExporter type="xml" target="dataTableTurnos" fileName="export" />
+                                </h:commandLink>
+                            </f:facet>
+                            
+                            <f:facet name="header">
+                                <h:outputText value="#{message.label_list_turnos}" />
+                                <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                                <p:columnToggler datasource="dataTableTurnos" trigger="toggler" />
+                            </f:facet>
+
+                            <p:column headerText="#{message.label_coluna_selecione}" style="width:60px;text-align:center">
+                                <p:commandButton process="dataTableTurnos" update=":form:pnlCadastroTurnos, :form:toolbarCadastroTurno" icon="ui-icon-pencil">
+                                    <f:setPropertyActionListener value="#{turno}" target="#{shiftBean.turno}"></f:setPropertyActionListener>                                                        
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column headerText="#{message.label_identificacao}" width="20">
+                                <h:outputText value="#{turno.id}" />
+                            </p:column>
+
+                            <p:column headerText="#{message.label_descricao}" filterBy="#{turno.descricao}" filterMatchMode="contains">
+                                <h:outputText value="#{turno.descricao}" />
+                            </p:column>
+
+                            <p:column headerText="#{message.label_minuto_parada}" width="150">
+                                <h:outputText value="#{turno.qtdMinutosParadas}">
+                                    <f:convertNumber minFractionDigits="2"></f:convertNumber>
+                                </h:outputText>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <!-- Fim Painel Cadastro do Turno -->
+
+                    </h:form>
+
+                </p:layoutUnit>
+
+            </p:layout>
+            
+        </h:body>
+
+    </f:view>
+</html>

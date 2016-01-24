@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title><h:outputText value="#{message.label_titulo_pagina_funcionario}"></h:outputText></title>
+            </f:facet>            
+        </h:head>
+
+        <h:body>
+            
+            <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+            <h:outputStylesheet library="css" name="newtheme.css"></h:outputStylesheet>
+            
+            <p:layout fullPage="true">
+ 
+                <p:layoutUnit position="north" size="105" >
+                    <h:form id="formMenu" onkeypress="if (event.keyCode == 13) { return false; }"> 
+                        
+                        <h:graphicImage value="/resources/images/logo-easa.png" height="50" ></h:graphicImage>
+
+                        <p:menubar>
+                                <p:submenu label="Cadastro">                        
+                                    <p:menuitem value="Usuário" url="/register/user.jsf" />                        
+                                    <p:menuitem value="Projeto" url="/register/project.jsf" />
+                                    <p:menuitem value="Contrato" url="/register/contract.jsf" />
+                                    <p:menuitem value="Funcionário" url="/register/worker.jsf" />
+                                    <p:menuitem value="Cliente" url="/register/customer.jsf" />                       
+                                    <p:menuitem value="Turno" url="/register/shift.jsf" />    
+                                    <p:menuitem value="Cargo" url="/register/role.jsf" />    
+                                    <p:menuitem value="Tipo Embarcação" url="/register/ship.jsf" /> 
+                                </p:submenu>
+
+                                <p:menuitem value="Importações de Dados" url="/import/import.jsf" />                         
+
+                                <p:submenu label="Operações">
+                                    <p:menuitem value="Projetos" url="/operation/operation-project.jsf" />                        
+                                </p:submenu>
+
+                                <p:submenu label="Relatórios">
+
+                                </p:submenu>    
+                                
+                                <p:submenu label="Outros Cadastros">                        
+                                    <p:menuitem value="Atividades" url="/register/activite.jsf" />                        
+                                    <p:menuitem value="Elemento" url="/register/element.jsf" />                        
+                                    <p:menuitem value="Peça" url="/register/part.jsf" />
+                                    <p:menuitem value="Espaço" url="/register/space.jsf" />
+                                    <p:menuitem value="Bordo" url="/register/edge.jsf" />
+                                    <p:menuitem value="Posição" url="/register/position.jsf" />                       
+                                    <p:menuitem value="Região" url="/register/region.jsf" />    
+                                    <p:menuitem value="Tipo Solda" url="/register/weldingType.jsf" />    
+                                    <p:menuitem value="Serviço de Solda" url="/register/weldingService.jsf" /> 
+                                </p:submenu>
+
+                                <f:facet name="options">
+                                    <p:commandButton immediate="true" id="btnLogout" action="#{loginBean.doLogout()}" value="Logout" icon="ui-icon-extlink" />
+                                </f:facet>
+                        </p:menubar>
+
+                    </h:form>                        
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="150" header="#{message.label_header_layout_unit_left}" resizable="true" closable="true" collapsible="true">
+
+                </p:layoutUnit>
+
+                <!--
+
+                <p:layoutUnit position="east" size="240" header="#{message.label_header_layout_unit_right}" resizable="true" closable="true" collapsible="true" effect="drop">
+
+                    <h:form id="formEast" onkeypress="if (event.keyCode == 13) { return false; }">
+                        <p:calendar id="inline" mode="inline" />
+                    </h:form>   
+
+                </p:layoutUnit>
+
+                -->
+
+                <p:layoutUnit position="center">
+                    
+                    <h:form id="form" onkeypress="if (event.keyCode == 13) { return false; }">               
+                               
+                        <p:growl id="msgsGrowl" showDetail="true" autoUpdate="true" for="msgsGrowl"/>                       
+
+                        <c:set var="user" value="#{userBean.usuario}" />
+                        <c:set var="controller" value="#{userBean}" />
+
+                        <!-- Início Painel Cadastro do Funcionário -->
+
+                        <p:panel id="pnlCadastroFuncionarios" header="#{message.label_header_pnl_cadastro_funcionario}" style="margin-bottom:20px;">
+
+                            <p:focus context="pnlCadastroFuncionarios"/>
+
+                            <h:panelGrid id="pnlGridCadastroFuncionarios" columns="3" cellpadding="10" >
+
+                                <p:outputLabel id="lblNome" for="textNome" value="#{message.label_nome_usuario}"></p:outputLabel>
+                                <p:inputText maxlength="255" size="50" id="textNome" value="#{userBean.usuario.nomeUsuario}" required="true" requiredMessage="#{message.label_required_nome_usuario}">
+                                    <f:validateLength minimum="20" maximum="255" />
+                                    <p:ajax update="msgNome" event="keyup" />
+                                </p:inputText>                        
+                                <p:message id="msgNome" for="textNome" showDetail="true" />                      
+
+                                <p:outputLabel id="lblMatricula" for="textMatricula" value="#{message.label_matricula}"></p:outputLabel>
+                                <p:inputText id="textMatricula" value="#{userBean.usuario.matricula}" required="true" requiredMessage="#{message.label_required_matricula}">
+                                    <f:validateLongRange minimum="1"></f:validateLongRange>
+                                    <p:ajax update="msgMatricula" event="keyup" />
+                                </p:inputText>                        
+                                <p:message id="msgMatricula" for="textMatricula" showDetail="true" />    
+
+                                <p:outputLabel id="lblCargo" for="selectCargo" value="#{message.label_cargo}"></p:outputLabel>
+                                <p:selectOneMenu id="selectCargo" value="#{userBean.cargo}" converter="entityConverter" filter="true" filterMatchMode="startsWith" effect="fade">
+                                        <f:selectItem itemLabel="#{message.label_select_item}" noSelectionOption="true" />
+                                        <f:selectItems value="#{roleBean.cargos}" var="cargo" itemValue="#{cargo}" itemLabel="#{cargo.descricao}" />                                
+                                </p:selectOneMenu>
+                                <p:message for="selectCargo" showDetail="true" />    
+
+                            </h:panelGrid>     
+
+                        </p:panel>
+                        
+                        <p:toolbar id="toolbarCadastroFuncionario"> 
+                            
+                            <f:facet name="left">
+                                <p:commandButton id="btnCadastrarFuncionario" value="#{message.label_botao_inserir_funcionario}" action="#{userBean.saveWorker(user)}" update="pnlCadastroFuncionarios, dataTableFuncionarios, toolbarCadastroFuncionario">
+                                
+                                </p:commandButton>  
+                            </f:facet>
+ 
+                            <f:facet name="right">                                
+                                <p:commandButton value="#{message.label_botao_limpar}"  resetValues="true" disabled="#{userBean.usuario.id != null}">
+                                    <!-- <f:ajax render="@all" resetValues="true" />  -->
+                                    <p:ajax update="pnlCadastroFuncionarios" resetValues="true" />
+                                </p:commandButton>   
+                            </f:facet>
+
+                        </p:toolbar>
+                        
+                        <f:verbatim>                            
+                            <br />                            
+                        </f:verbatim>
+
+                        <p:dataTable emptyMessage="#{message.label_sem_registro}" id="dataTableFuncionarios" var="funcionario" value="#{userBean.funcionarios}" 
+                                     rows="4"
+                                     paginator="true" 
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                                     rowsPerPageTemplate="5,10,15" paginatorAlwaysVisible="true" 
+                                     style="margin-bottom:20px">         
+                            
+                            <f:facet name="{Exporters}">
+                                <h:commandLink>
+                                    <p:graphicImage value="/resources/images/excel.png" width="24"/>
+                                    <p:dataExporter encoding="iso-8859-1" type="xls" target="dataTableFuncionarios" fileName="export" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage value="/resources/images/csv.png" width="24"/>
+                                    <p:dataExporter encoding="iso-8859-1" type="csv" target="dataTableFuncionarios" fileName="export" />
+                                </h:commandLink>
+
+                            </f:facet>
+                            
+                            <f:facet name="header">
+                                <h:outputText value="#{message.label_list_funcionarios}" />
+                                <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                                <p:columnToggler datasource="dataTableFuncionarios" trigger="toggler" />
+                            </f:facet>
+
+                            <p:column exportable="false" headerText="#{message.label_coluna_selecione}" style="width:60px;text-align:center">
+                                <p:commandButton process="dataTableFuncionarios" update=":form:pnlCadastroFuncionarios, :form:toolbarCadastroFuncionario" icon="ui-icon-pencil">
+                                    <f:setPropertyActionListener value="#{funcionario}" target="#{userBean.usuario}"></f:setPropertyActionListener>
+                                    <f:setPropertyActionListener value="#{funcionario.idRole}" target="#{userBean.cargo}"></f:setPropertyActionListener>                            
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column exportable="false" headerText="#{message.label_identificacao}" width="20">
+                                <h:outputText value="#{funcionario.id}" />
+                            </p:column>
+
+                            <p:column headerText="#{message.label_matricula}" width="150" filterBy="#{funcionario.matricula}" filterMatchMode="contains">
+                                <h:outputText value="#{funcionario.matricula}" />
+                            </p:column>
+
+                            <p:column headerText="#{message.label_nome_usuario}" filterBy="#{funcionario.nomeUsuario}" filterMatchMode="contains">
+                                <h:outputText value="#{funcionario.nomeUsuario}" />
+                            </p:column>
+
+                            <p:column headerText="#{message.label_data_registro_usuario}" width="100">
+                                <h:outputText value="#{funcionario.userRegistered}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+
+                        </p:dataTable>
+                        
+                        <h:commandLink immediate="true">
+                            <p:graphicImage value="/resources/images/excel.png" width="24"/>
+                            <p:dataExporter encoding="iso-8859-1" type="xls" target="dataTableFuncionarios" fileName="export" pageOnly="true" />
+                        </h:commandLink>
+
+                        <h:commandLink immediate="true">
+                            <p:graphicImage value="/resources/images/csv.png" width="24"/>
+                            <p:dataExporter encoding="iso-8859-1" type="csv" target="dataTableFuncionarios" fileName="export" pageOnly="true" />
+                        </h:commandLink>
+
+                        <!-- Fim Painel Cadastro do Funcionário -->
+
+                    </h:form>
+
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>

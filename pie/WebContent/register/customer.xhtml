@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title><h:outputText value="#{message.label_titulo_pagina_cliente}"></h:outputText></title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+            
+            <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+            <h:outputStylesheet library="css" name="newtheme.css"></h:outputStylesheet>
+            
+            <p:layout fullPage="true">
+ 
+                <p:layoutUnit position="north" size="105" >
+                    <h:form id="formMenu" onkeypress="if (event.keyCode == 13) { return false; }"> 
+
+                        <h:graphicImage value="/resources/images/logo-easa.png" height="50" ></h:graphicImage>
+
+                        <p:menubar>
+                                <p:submenu label="Cadastro">                        
+                                    <p:menuitem value="Usuário" url="/register/user.jsf" />                        
+                                    <p:menuitem value="Projeto" url="/register/project.jsf" />
+                                    <p:menuitem value="Contrato" url="/register/contract.jsf" />
+                                    <p:menuitem value="Funcionário" url="/register/worker.jsf" />
+                                    <p:menuitem value="Cliente" url="/register/customer.jsf" />                       
+                                    <p:menuitem value="Turno" url="/register/shift.jsf" />    
+                                    <p:menuitem value="Cargo" url="/register/role.jsf" />    
+                                    <p:menuitem value="Tipo Embarcação" url="/register/ship.jsf" /> 
+                                </p:submenu>
+
+                                <p:menuitem value="Importações de Dados" url="/import/import.jsf" />                         
+
+                                <p:submenu label="Operações">
+                                    <p:menuitem value="Projetos" url="/operation/operation-project.jsf" />                        
+                                </p:submenu>
+
+                                <p:submenu label="Relatórios">
+
+                                </p:submenu>    
+                                
+                                <p:submenu label="Outros Cadastros">                        
+                                    <p:menuitem value="Atividades" url="/register/activite.jsf" />                        
+                                    <p:menuitem value="Elemento" url="/register/element.jsf" />                        
+                                    <p:menuitem value="Peça" url="/register/part.jsf" />
+                                    <p:menuitem value="Espaço" url="/register/space.jsf" />
+                                    <p:menuitem value="Bordo" url="/register/edge.jsf" />
+                                    <p:menuitem value="Posição" url="/register/position.jsf" />                       
+                                    <p:menuitem value="Região" url="/register/region.jsf" />    
+                                    <p:menuitem value="Tipo Solda" url="/register/weldingType.jsf" />    
+                                    <p:menuitem value="Serviço de Solda" url="/register/weldingService.jsf" /> 
+                                </p:submenu>
+
+                                <f:facet name="options">
+                                    <p:commandButton immediate="true" id="btnLogout" action="#{loginBean.doLogout()}" value="Logout" icon="ui-icon-extlink" />
+                                </f:facet>
+                        </p:menubar>
+
+                    </h:form>                        
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="150" header="#{message.label_header_layout_unit_left}" resizable="true" closable="true" collapsible="true">
+
+                </p:layoutUnit>
+
+                <!--
+
+                <p:layoutUnit position="east" size="240" header="#{message.label_header_layout_unit_right}" resizable="true" closable="true" collapsible="true" effect="drop">
+
+                    <h:form id="formEast" onkeypress="if (event.keyCode == 13) { return false; }">
+                        <p:calendar id="inline" mode="inline" />
+                    </h:form>   
+
+                </p:layoutUnit>
+
+                -->
+
+                <p:layoutUnit position="center">
+                    
+                    <h:form id="form" onkeypress="if (event.keyCode == 13) { return false; }">               
+                               
+                        <p:growl id="msgsGrowl" showDetail="true" autoUpdate="true" for="msgsGrowl"/>
+
+                        <c:set var="customer" value="#{customerBean.cliente}" />
+                        <c:set var="controller" value="#{customerBean}" />
+
+                        <!-- Início Painel Cadastro do Cliente -->
+
+                        <p:panel id="pnlCadastroClientes" header="#{message.label_header_pnl_cadastro_cliente}" style="margin-bottom:20px;">
+
+                            <p:focus context="pnlCadastroClientes"/>
+
+                            <h:panelGrid id="pnlGridCadastroClientes" columns="3" cellpadding="10" >
+
+                                <p:outputLabel id="lblTipoCliente" for="selectTipoCliente" value="#{message.label_tipo_cliente}" ></p:outputLabel>
+                                <p:selectOneMenu id="selectTipoCliente" value="#{customerBean.tipoCliente}" disabled="#{customerBean.cliente.id !=null}">
+                                    <p:ajax update="pnlCadastroClientes, dataTableClientes" />
+                                    <f:selectItem itemLabel="#{message.label_combo_cliente_fisica}" itemValue="F"  />
+                                    <f:selectItem itemLabel="#{message.label_combo_cliente_juridica}" itemValue="J" />                            
+                                </p:selectOneMenu>
+                                <p:outputLabel></p:outputLabel>
+
+                                <p:outputLabel id="lblNome" for="textNome" rendered="#{customerBean.tipoCliente == 'F'}" value="#{message.label_nome_cliente}"></p:outputLabel>
+                                <p:inputText maxlength="255" size="50" id="textNome" value="#{customerBean.cliente.nomePF}" rendered="#{customerBean.tipoCliente == 'F'}" required="#{customerBean.tipoCliente == 'F'}" requiredMessage="#{message.label_required_nome_cliente}">
+                                    <f:validateLength minimum="20" maximum="255" />
+                                    <p:ajax update="msgNomePF" event="keyup" />
+                                </p:inputText>                        
+                                <p:message id="msgNomePF" for="textNome" showDetail="true" rendered="#{customerBean.tipoCliente == 'F'}" />                      
+
+                                <p:outputLabel id="lblCPF" for="textCPF" rendered="#{customerBean.tipoCliente == 'F'}" value="#{message.label_cpf_cliente}"></p:outputLabel>
+                                <p:inputMask id="textCPF" value="#{customerBean.cliente.cpf}" mask="999.999.999-99" rendered="#{customerBean.tipoCliente == 'F'}" required="#{customerBean.tipoCliente == 'F'}" requiredMessage="#{message.label_required_cpf_usuario}"></p:inputMask>                     
+                                <p:message for="textCPF" showDetail="true" rendered="#{customerBean.tipoCliente == 'F'}" />    
+
+                                <p:outputLabel id="lblRazaoSocial" for="textRazaoSocial" rendered="#{customerBean.tipoCliente == 'J'}" value="#{message.label_razao_social}"></p:outputLabel>
+                                <p:inputText maxlength="255" size="50" id="textRazaoSocial" value="#{customerBean.cliente.razaoSocial}" rendered="#{customerBean.tipoCliente == 'J'}" required="#{customerBean.tipoCliente == 'J'}" requiredMessage="#{message.label_required_razao_social}">
+                                    <f:validateLength minimum="20" maximum="255" />
+                                    <p:ajax update="msgRazaoSocial" event="keyup" />
+                                </p:inputText>                        
+                                <p:message id="msgRazaoSocial" for="textRazaoSocial" showDetail="true" rendered="#{customerBean.tipoCliente == 'J'}" />   
+
+                                <p:outputLabel id="lblNomeFantasia" for="textNomeFantasia" rendered="#{customerBean.tipoCliente == 'J'}" value="#{message.label_nome_fantasia}"></p:outputLabel>
+                                <p:inputText maxlength="255" size="50" id="textNomeFantasia" value="#{customerBean.cliente.nomeFantasia}" rendered="#{customerBean.tipoCliente == 'J'}" required="#{customerBean.tipoCliente == 'J'}" requiredMessage="#{message.label_required_nome_fantasia}">
+                                    <f:validateLength minimum="20" maximum="255" />
+                                    <p:ajax update="msgNomeFantasia" event="keyup" />
+                                </p:inputText>                        
+                                <p:message id="msgNomeFantasia" for="textNomeFantasia" showDetail="true" rendered="#{customerBean.tipoCliente == 'J'}" /> 
+
+                                <p:outputLabel id="lblCNPJ" for="textCNPJ" rendered="#{customerBean.tipoCliente == 'J'}" value="#{message.label_cnpj}"></p:outputLabel>
+                                <p:inputMask id="textCNPJ" value="#{customerBean.cliente.cnpj}" mask="99.999.999/9999-99" rendered="#{customerBean.tipoCliente == 'J'}" required="#{customerBean.tipoCliente == 'J'}" requiredMessage="#{message.label_required_cnpj_cliente}"></p:inputMask>                     
+                                <p:message for="textCNPJ" showDetail="true" rendered="#{customerBean.tipoCliente == 'J'}" />  
+
+                            </h:panelGrid>
+                            
+                        </p:panel>
+                        
+                        <p:toolbar id="toolbarCadastroCliente">  
+                            
+                            <f:facet name="left">
+                                <p:commandButton id="btnCadastrarCliente" value="#{message.label_botao_inserir_cliente}" action="#{customerBean.saveCustomer(customer)}" update="pnlCadastroClientes, dataTableClientes, toolbarCadastroCliente">
+                                </p:commandButton>
+                            </f:facet>
+ 
+                            <f:facet name="right">                                
+                                <p:commandButton value="#{message.label_botao_limpar}"  resetValues="true" disabled="#{customerBean.cliente.id != null}">
+                                    <!-- <f:ajax render="@all" resetValues="true" />  -->
+                                    <p:ajax update="pnlCadastroClientes" resetValues="true" />
+                                </p:commandButton>   
+                            </f:facet>
+
+                        </p:toolbar>
+                        
+                        <f:verbatim>                            
+                            <br />                            
+                        </f:verbatim>
+
+                        <p:dataTable emptyMessage="#{message.label_sem_registro}" id="dataTableClientes" var="cliente" value="#{customerBean.clientes}"
+                                     rows="4"
+                                     paginator="true" 
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                                     rowsPerPageTemplate="5,10,15" 
+                                     >
+                            
+                            <f:facet name="{Exporters}">
+                                <h:commandLink>
+                                    <p:graphicImage name="/resources/images/excel.png" width="24"/>
+                                    <p:dataExporter type="xls" target="dataTableClientes" fileName="export" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/resources/images/pdf.png" width="24"/>
+                                    <p:dataExporter type="pdf" target="dataTableClientes" fileName="export"/>
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/resources/images/csv.png" width="24"/>
+                                    <p:dataExporter type="csv" target="dataTableClientes" fileName="export" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/resources/images/xml.png" width="24"/>
+                                    <p:dataExporter type="xml" target="dataTableClientes" fileName="export" />
+                                </h:commandLink>
+                            </f:facet>
+                            
+                            <f:facet name="header">
+                                <h:outputText value="#{message.label_list_clientes}" />
+                                <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                                <p:columnToggler datasource="dataTableClientes" trigger="toggler" />
+                            </f:facet>
+
+                            <p:column headerText="#{message.label_coluna_selecione}" style="width:60px;text-align:center">
+                                <p:commandButton process="dataTableClientes" update=":form:pnlCadastroClientes, :form:toolbarCadastroCliente" icon="ui-icon-pencil">
+                                    <f:setPropertyActionListener value="#{cliente}" target="#{customerBean.cliente}"></f:setPropertyActionListener>                                                        
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column headerText="#{message.label_identificacao}" width="20">
+                                <h:outputText value="#{cliente.id}" />
+                            </p:column>
+
+                            <p:column headerText="#{message.label_nome_cliente}" rendered="#{customerBean.tipoCliente == 'F'}" filterBy="#{cliente.nomePF}" filterMatchMode="contains">
+                                <h:outputText value="#{cliente.nomePF}" rendered="#{customerBean.tipoCliente == 'F'}" />
+                            </p:column>
+
+                            <p:column headerText="#{message.label_cpf_cliente}" rendered="#{customerBean.tipoCliente == 'F'}" width="200">
+                                <h:outputText value="#{cliente.cpf}" rendered="#{customerBean.tipoCliente == 'F'}" />
+                            </p:column>
+
+                            <p:column headerText="#{message.label_razao_social}" rendered="#{customerBean.tipoCliente == 'J'}" filterBy="#{cliente.razaoSocial}" filterMatchMode="contains">
+                                 <h:outputText value="#{cliente.razaoSocial}" rendered="#{customerBean.tipoCliente == 'J'}" />
+                            </p:column>
+
+                            <p:column headerText="#{message.label_nome_fantasia}" rendered="#{customerBean.tipoCliente == 'J'}" filterBy="#{cliente.nomeFantasia}" filterMatchMode="contains">
+                                <h:outputText value="#{cliente.nomeFantasia}" rendered="#{customerBean.tipoCliente == 'J'}" />
+                            </p:column>
+
+                            <p:column headerText="#{message.label_cnpj}" rendered="#{customerBean.tipoCliente == 'J'}" width="200">
+                                <h:outputText value="#{cliente.cnpj}" rendered="#{customerBean.tipoCliente == 'J'}" />
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <!-- Fim Painel Cadastro do Cliente -->
+
+                    </h:form>
+
+                </p:layoutUnit>
+
+            </p:layout>
+  
+        </h:body>
+
+    </f:view>
+</html>

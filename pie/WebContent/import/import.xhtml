@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title><h:outputText value="#{message.label_titulo_pagina_importacao}"></h:outputText></title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+            
+            <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+            
+            <h:outputStylesheet library="css" name="newtheme.css"></h:outputStylesheet>
+            
+            <p:layout fullPage="true">
+ 
+                <p:layoutUnit position="north" size="105" >
+                    <h:form id="formMenu" onkeypress="if (event.keyCode == 13) { return false; }"> 
+
+                        <h:graphicImage value="/resources/images/logo-easa.png" height="50" ></h:graphicImage>
+
+                        <p:menubar>
+                            <p:submenu label="Cadastro">                        
+                                <p:menuitem value="Usuário" url="/register/user.jsf" />                        
+                                <p:menuitem value="Projeto" url="/register/project.jsf" />
+                                <p:menuitem value="Contrato" url="/register/contract.jsf" />
+                                <p:menuitem value="Funcionário" url="/register/worker.jsf" />
+                                <p:menuitem value="Cliente" url="/register/customer.jsf" />                       
+                                <p:menuitem value="Turno" url="/register/shift.jsf" />    
+                                <p:menuitem value="Cargo" url="/register/role.jsf" />    
+                                <p:menuitem value="Tipo Embarcação" url="/register/ship.jsf" /> 
+                            </p:submenu>
+
+                            <p:menuitem value="Importações de Dados" url="/import/import.jsf" />                         
+
+                            <p:submenu label="Operações">
+                               <p:menuitem value="Projetos" url="/operation/operation-project.jsf" />                        
+                            </p:submenu>
+
+                            <p:submenu label="Relatórios">
+
+                            </p:submenu>                    
+
+                            <f:facet name="options">
+                                <p:commandButton immediate="true" id="btnLogout" action="#{loginBean.doLogout()}" value="Logout" icon="ui-icon-extlink" />
+                            </f:facet>
+                        </p:menubar>
+
+                    </h:form>                        
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="150" header="#{message.label_header_layout_unit_left}" resizable="true" closable="true" collapsible="true">
+
+                </p:layoutUnit>
+
+                <!--
+                
+                <p:layoutUnit position="east" size="240" header="#{message.label_header_layout_unit_right}" resizable="true" closable="true" collapsible="true" effect="drop">
+
+                    <h:form id="formEast" onkeypress="if (event.keyCode == 13) { return false; }">
+                        <p:calendar id="inline" mode="inline" />
+                    </h:form>   
+
+                </p:layoutUnit>
+                
+                -->
+
+                <p:layoutUnit position="center">
+                    
+                    <h:form enctype="multipart/form-data" id="form" onkeypress="if (event.keyCode == 13) { return false; }">               
+                               
+                        <p:growl id="msgsGrowl" showDetail="true" autoUpdate="true" for="msgsGrowl"/>  
+
+                        <c:set var="controller" value="#{importBean}" /> 
+
+                        <!-- Início Painel Importações -->
+
+                        <p:panel id="pnlImport" header="#{message.label_header_pnl_importacao}" footer="PIE 2015" style="margin-bottom:20px;">
+
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <p:outputLabel value="Importar:"></p:outputLabel>
+                                <p:selectOneRadio value="#{importBean.tipoImport}">                                     
+                                    <f:selectItem itemLabel="#{message.label_select_importacao_hh}" itemValue="H" />
+                                    <f:selectItem itemLabel="#{message.label_select_importacao_corte}" itemValue="C" />
+                                    <f:selectItem itemLabel="#{message.label_select_importacao_solda}" itemValue="S" />
+                                    <f:selectItem itemLabel="#{message.label_select_importacao_pcpp}" itemValue="P" />
+                                    <p:ajax update="pnlImport"></p:ajax>
+                                </p:selectOneRadio>                                           
+                            </h:panelGrid> 
+                            
+                            <h:panelGrid columns="3" cellpadding="10" rendered="#{importBean.tipoImport == 'S' || importBean.tipoImport == 'P'}">
+                                
+                                <p:outputLabel id="lblProjetos" for="selectProjetos" value="#{message.label_nome_projeto}" ></p:outputLabel>
+                                <p:selectOneMenu id="selectProjetos" converter="entityConverter" value="#{importBean.projeto}" filter="true" filterMatchMode="startsWith" effect="fade">                                    
+                                    <f:selectItem itemLabel="#{message.label_select_item}" noSelectionOption="true" />
+                                    <f:selectItems value="#{projectBean.projetos}" var="projeto" itemValue="#{projeto}" itemLabel="#{projeto.nomeProjeto}" />                                                                                               
+                                </p:selectOneMenu>
+                                
+                            </h:panelGrid>                                
+                            
+                            <h:panelGrid columns="2" cellpadding="10" rendered="#{importBean.tipoImport == 'C'}">
+                                <p:outputLabel value="Período:"></p:outputLabel>
+                                <p:selectOneRadio value="#{importBean.periodoImport}">                                     
+                                    <f:selectItem itemLabel="#{message.label_select_importacao_diario}" itemValue="D" />
+                                    <f:selectItem itemLabel="#{message.label_select_importacao_mensal}" itemValue="M" />                                                                        
+                                </p:selectOneRadio>                                           
+                            </h:panelGrid>
+                            
+                            <h:panelGrid id="pnlGridImport" columns="4" cellpadding="10">                        
+                                <p:fileUpload value="#{importBean.file}" label="#{message.label_importacao_dados_csv}" mode="simple" id="textUploadImport"
+                                              auto="true" allowTypes="/(\.|\/)(CSV)$/" invalidFileMessage="#{message.label_required_type_file}"
+                                              required="true" requiredMessage="#{message.label_required_file}"/>
+                                <p:commandButton value="#{message.label_botao_importacao}" ajax="false" actionListener="#{importBean.upload()}"></p:commandButton>
+                                <p:message for="textUploadImport" showDetail="true" />                                   
+                            </h:panelGrid>                            
+                        </p:panel>                
+
+                        <!-- Fim Painel Importações -->
+
+                    </h:form>
+
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>

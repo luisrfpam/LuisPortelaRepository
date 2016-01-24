@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>     
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title><h:outputText value="#{message.label_titulo_pagina_login}"></h:outputText></title>                
+            </f:facet>
+        </h:head>
+
+        <h:body>
+            
+            <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+            <h:outputStylesheet library="css" name="newtheme.css"></h:outputStylesheet>
+            
+            <h:form id="form">                     
+                
+                <p:growl id="msgsGrowl" showDetail="true" autoUpdate="true" for="msgsGrowl"></p:growl>                
+                
+                <!-- Início Painel Login -->
+                
+                <div id="divPnlLogin">            
+                               
+                    <h:panelGroup>
+
+                        <p:panel id="pnlLogin" header="Login EASA" footer="PIE 2015" style="margin-bottom:20px; text-align: center;">
+                            
+                            <p:focus context="pnlLogin"/>                            
+                            
+                            <h:graphicImage value="/resources/images/logo-easa.png" height="100"></h:graphicImage>
+                                                         
+                            <h:panelGrid id="pnlGridLogin" columns="3" cellpadding="10">
+                                <p:outputLabel for="textLogin" value="#{message.label_login}" id="lblLogin"></p:outputLabel>
+                                <p:inputText value="#{loginBean.login}" id="textLogin" required="true" requiredMessage="#{message.label_required_acesso_login_usuario}"></p:inputText>
+                                <p:message for="textLogin" />
+
+                                <p:outputLabel for="textPassword" value="#{message.label_senha}" id="lblPassword"></p:outputLabel>
+                                <p:password value="#{loginBean.senha}" id="textPassword" promptLabel="Favor informe a sua senha" required="true" requiredMessage="#{message.label_required_acesso_senha_usuario}"></p:password> 
+                                <p:message for="textPassword" />                                                
+                            </h:panelGrid>
+                           
+
+                            <p:commandButton id="btnActionLogar" value="#{message.label_botao_login}" update="pnlLogin" action="#{loginBean.doLogin()}"></p:commandButton>
+                            
+                        </p:panel>
+
+                    </h:panelGroup>
+                    
+                </div>
+                
+                <!-- Fim Painel Login -->
+                
+            </h:form>
+
+        </h:body>
+
+    </f:view>
+</html>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="default" transaction-type="RESOURCE_LOCAL">
+    <class>br.org.transportar.entities.Tbshiptype</class>
+    <class>br.org.transportar.entities.Tbrole</class>
+    <class>br.org.transportar.entities.Tbshift</class>
+    <class>br.org.transportar.entities.Tblancamentoshoras</class>
+    <class>br.org.transportar.entities.Tbrawmaterial</class>
+    <class>br.org.transportar.entities.Tbunit</class>
+    <class>br.org.transportar.entities.Tbprofile</class>
+    <class>br.org.transportar.entities.Tbcontract</class>
+    <class>br.org.transportar.entities.Tbproject</class>
+    <class>br.org.transportar.entities.Tbcustomer</class>
+    <class>br.org.transportar.entities.Tbmaterialtype</class>
+    <class>br.org.transportar.entities.Tbuser</class>
+    <class>br.org.transportar.entities.Tbposicao</class>
+    <class>br.org.transportar.entities.Tbactivite</class>
+    <class>br.org.transportar.entities.Tbelemento</class>
+    <class>br.org.transportar.entities.Tbregiao</class>
+    <class>br.org.transportar.entities.Tbservico</class>
+    <class>br.org.transportar.entities.Tbespaco</class>
+    <class>br.org.transportar.entities.Tblancamentoservico</class>
+    <class>br.org.transportar.entities.Tbtiposolda</class>
+    <class>br.org.transportar.entities.Tblancamentoelemento</class>
+    <class>br.org.transportar.entities.Tblancamentoelementoimport</class>
+    <class>br.org.transportar.entities.Tblancamentoshorasimport</class>
+    <class>br.org.transportar.entities.Tblancamentoservicoimport</class>
+    <class>br.org.transportar.entities.Tbblock</class>
+    <class>br.org.transportar.entities.Tbpart</class>
+    <class>br.org.transportar.entities.Tbpanel</class>
+    <class>br.org.transportar.entities.Tbside</class>
+    <class>br.org.transportar.entities.Tbassembly</class>
+    <class>br.org.transportar.entities.Tbplancuts</class>
+    <class>br.org.transportar.entities.Tbedification</class>
+    <class>br.org.transportar.entities.Tbrealcuts</class>
+    <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+    <validation-mode>AUTO</validation-mode>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/dbpie?createDatabaseIfNotExist=true"/>
+      <!--
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://mysql10137-pieSystem.underjelastic.com.br/dbpie?createDatabaseIfNotExist=true"/>     
+      SATpbt52129
+      -->
+      <property name="hibernate.show_sql" value="true" />
+      <property name="hibernate.format_sql" value="true" />
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.password" value=""/>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+      <property name="hibernate.cache.use_query_cache" value="true"/>
+      <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory"/>
+    </properties>
+  </persistence-unit>
+</persistence>

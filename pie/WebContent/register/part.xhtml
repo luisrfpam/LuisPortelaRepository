@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title><h:outputText value="#{message.label_titulo_pagina_contrato}"></h:outputText></title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+            
+            <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+            <h:outputStylesheet library="css" name="newtheme.css"></h:outputStylesheet>
+            
+            <p:dialog modal="true" id="dialogBuscarProjetos" widgetVar="dlgBuscaProjeto" header="#{message.label_dialog_busca_projeto}" resizable="true" width="700" showEffect="clip" hideEffect="clip">
+
+                <h:form id="formDialogProjeto">
+
+                        <p:focus context="pnlGridBuscaProjetos"/>
+
+                        <h:panelGrid id="pnlGridBuscaProjetos" columns="3" cellpadding="10">
+
+                            <p:outputLabel id="lblNome" for="textNome" value="#{message.label_nome_projeto}"></p:outputLabel>
+                            <p:inputText id="textNome" value="#{projectBean.busca}"></p:inputText>                                                
+                            <p:commandButton actionListener="#{projectBean.findProject(event)}" icon="ui-icon-search" process="pnlGridBuscaProjetos"  update=":formDialogProjeto:pnlGridBuscaProjetos, :formDialogProjeto:dataTableProjetosEncontrados" id="btnBuscarProjeto" value="#{message.label_botao_procurar}">
+
+                            </p:commandButton>                                                    
+
+                        </h:panelGrid>                       
+
+                        <p:dataTable emptyMessage="#{message.label_sem_registro}" id="dataTableProjetosEncontrados" var="projeto" value="#{projectBean.projetosFiltrados}"
+                                     rows="4"
+                                     paginator="true" 
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15"                                         
+                                     >
+
+                            <p:column style="width:40px;text-align:center">
+                                <p:commandButton process="dataTableProjetosEncontrados" update=":form:pnlCadastroProjetos" icon="ui-icon-close" oncomplete="PF('dlgBuscaProjeto').hide();">
+                                    <f:setPropertyActionListener value="#{projeto}" target="#{contractBean.projeto}"></f:setPropertyActionListener>
+                                    <f:actionListener binding="#{contractBean.selectProject(event)}"></f:actionListener>
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column headerText="#{message.label_identificacao}" width="20">
+                                <h:outputText value="#{projeto.id}" />
+                            </p:column>
+
+                            <p:column headerText="#{message.label_nome_projeto}">
+                                <h:outputText value="#{projeto.nomeProjeto}" />
+                            </p:column>                        
+
+                            <p:column headerText="#{message.label_status_projeto}" width="100">
+                                <h:outputText value="#{projeto.statusProject}">                           
+                                </h:outputText>
+                            </p:column>                            
+
+                        </p:dataTable>
+
+                </h:form>
+
+            </p:dialog>
+            
+            <p:layout fullPage="true">
+ 
+                <p:layoutUnit position="north" size="105" >
+                    <h:form id="formMenu" onkeypress="if (event.keyCode == 13) { return false; }"> 
+
+                        <h:graphicImage value="/resources/images/logo-easa.png" height="50" ></h:graphicImage>
+
+                        <p:menubar>
+                                <p:submenu label="Cadastro">                        
+                                    <p:menuitem value="Usuário" url="/register/user.jsf" />                        
+                                    <p:menuitem value="Projeto" url="/register/project.jsf" />
+                                    <p:menuitem value="Contrato" url="/register/contract.jsf" />
+                                    <p:menuitem value="Funcionário" url="/register/worker.jsf" />
+                                    <p:menuitem value="Cliente" url="/register/customer.jsf" />                       
+                                    <p:menuitem value="Turno" url="/register/shift.jsf" />    
+                                    <p:menuitem value="Cargo" url="/register/role.jsf" />    
+                                    <p:menuitem value="Tipo Embarcação" url="/register/ship.jsf" /> 
+                                </p:submenu>
+
+                                <p:menuitem value="Importações de Dados" url="/import/import.jsf" />                         
+
+                                <p:submenu label="Operações">
+                                    <p:menuitem value="Projetos" url="/operation/operation-project.jsf" />                        
+                                </p:submenu>
+
+                                <p:submenu label="Relatórios">
+
+                                </p:submenu>    
+                                
+                                <p:submenu label="Outros Cadastros">                        
+                                    <p:menuitem value="Atividades" url="/register/activite.jsf" />                        
+                                    <p:menuitem value="Elemento" url="/register/element.jsf" />                        
+                                    <p:menuitem value="Peça" url="/register/part.jsf" />
+                                    <p:menuitem value="Espaço" url="/register/space.jsf" />
+                                    <p:menuitem value="Bordo" url="/register/edge.jsf" />
+                                    <p:menuitem value="Posição" url="/register/position.jsf" />                       
+                                    <p:menuitem value="Região" url="/register/region.jsf" />    
+                                    <p:menuitem value="Tipo Solda" url="/register/weldingType.jsf" />    
+                                    <p:menuitem value="Serviço de Solda" url="/register/weldingService.jsf" /> 
+                                </p:submenu>
+
+                                <f:facet name="options">
+                                    <p:commandButton immediate="true" id="btnLogout" action="#{loginBean.doLogout()}" value="Logout" icon="ui-icon-extlink" />
+                                </f:facet>
+                        </p:menubar>
+
+                    </h:form>                        
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="150" header="#{message.label_header_layout_unit_left}" resizable="true" closable="true" collapsible="true">
+
+                </p:layoutUnit>
+
+                <!--
+
+                <p:layoutUnit position="east" size="240" header="#{message.label_header_layout_unit_right}" resizable="true" closable="true" collapsible="true" effect="drop">
+
+                    <h:form id="formEast" onkeypress="if (event.keyCode == 13) { return false; }">
+                        <p:calendar id="inline" mode="inline" />
+                    </h:form>   
+
+                </p:layoutUnit>
+
+                -->
+
+                <p:layoutUnit position="center">
+                    
+                    <h:form id="form" onkeypress="if (event.keyCode == 13) { return false; }">               
+                               
+                        <p:growl id="msgsGrowl" showDetail="true" autoUpdate="true" for="msgsGrowl"/>
+
+                        <c:set var="contract" value="#{contractBean.contrato}" />
+                        <c:set var="controller" value="#{contractBean}" />                       
+
+                        <!-- Início Painel Cadastro do Contrato -->
+
+                        <p:panel id="pnlCadastroContratos" header="#{message.label_header_pnl_cadastro_contrato}" footer="PIE 2015" style="margin-bottom:20px;">
+
+                            <p:focus context="pnlCadastroContratos"/>
+
+                            <h:panelGrid id="pnlGridCadastroContratos" columns="3" cellpadding="10" >                       
+
+                                <p:outputLabel id="lblDtInicio" for="calendarDtInicio" value="#{message.label_data_inicio_contrato}"></p:outputLabel>
+                                <p:calendar id="calendarDtInicio" pattern="dd/MM/yyyy" value="#{contractBean.contrato.dtInicio}" required="true" requiredMessage="#{message.label_required_data_inicio_contrato}"></p:calendar>                   
+                                <p:message for="calendarDtInicio" showDetail="true" />  
+
+                                <p:outputLabel id="lblDtFim" for="calendarDtFim" value="#{message.label_data_fim_contrato}"></p:outputLabel>
+                                <p:calendar id="calendarDtFim" pattern="dd/MM/yyyy" value="#{contractBean.contrato.dtFim}" required="true" requiredMessage="#{message.label_required_data_fim_contrato}"></p:calendar>                   
+                                <p:message for="calendarDtFim" showDetail="true" />  
+
+                                <p:outputLabel  id="lblTipoCliente" for="selectTipoCliente" value="#{message.label_tipo_cliente}" ></p:outputLabel>
+                                <p:selectOneMenu disabled="#{contractBean.contrato.id != null}" id="selectTipoCliente" value="#{contractBean.tipoCliente}">
+                                    <p:ajax update="pnlGridCadastroContratos" />
+                                    <f:selectItem itemLabel="#{message.label_combo_cliente_fisica}" itemValue="F">                                
+                                    </f:selectItem>
+                                    <f:selectItem itemLabel="#{message.label_combo_cliente_juridica}" itemValue="J">                                
+                                    </f:selectItem>
+                                </p:selectOneMenu>
+                                <p:outputLabel></p:outputLabel>
+
+                                <p:outputLabel rendered="#{contractBean.tipoCliente == 'F'}" id="lblClientePessoaFisica" for="selectClientePessoaFisica" value="#{message.label_nome_cliente}"></p:outputLabel>
+                                <p:selectOneMenu disabled="#{contractBean.contrato.id != null}" requiredMessage="#{message.label_required_combo_cliente_fisica}" required="#{customerBean.tipoCliente == 'F'}" rendered="#{contractBean.tipoCliente == 'F'}" id="selectClientePessoaFisica" value="#{contractBean.cliente}" converter="entityConverter" filter="true" filterMatchMode="startsWith" effect="fade">
+                                        <f:selectItem itemLabel="#{message.label_select_item}" noSelectionOption="true" />
+                                        <f:selectItems value="#{customerBean.clientesPessoasFisicas}" var="clienteFisica" itemValue="#{clienteFisica}" itemLabel="#{clienteFisica.nomePF}" />                                
+                                </p:selectOneMenu>
+                                <p:message rendered="#{contractBean.tipoCliente == 'F'}" for="selectClientePessoaFisica" showDetail="true" />
+
+                                <p:outputLabel rendered="#{contractBean.tipoCliente == 'J'}" id="lblClientePessoaJuridica" for="selectClientePessoaJuridica" value="#{message.label_nome_cliente}"></p:outputLabel>
+                                <p:selectOneMenu disabled="#{contractBean.contrato.id != null}" requiredMessage="#{message.label_required_combo_cliente_juridica}" required="#{customerBean.tipoCliente == 'J'}" rendered="#{contractBean.tipoCliente == 'J'}" id="selectClientePessoaJuridica" value="#{contractBean.cliente}" converter="entityConverter" filter="true" filterMatchMode="startsWith" effect="fade">
+                                        <f:selectItem itemLabel="#{message.label_select_item}" noSelectionOption="true" />
+                                        <f:selectItems value="#{customerBean.clientesPessoasJuridicas}" var="clienteJuridica" itemValue="#{clienteJuridica}" itemLabel="#{clienteJuridica.nomeFantasia}" />                                
+                                </p:selectOneMenu>
+                                <p:message rendered="#{contractBean.tipoCliente == 'J'}" for="selectClientePessoaJuridica" showDetail="true" />                                                                             
+
+                            </h:panelGrid>
+
+                            <p:fieldset id="pnlCadastroProjetos" legend="#{message.label_header_pnl_lista_projetos}" toggleable="true" toggleSpeed="500">
+
+                                <p:dataTable emptyMessage="#{message.label_sem_registro}" id="dataTableProjetos" var="projeto" value="#{contractBean.contrato.tbprojectSet}">
+
+                                    <f:facet name="header">
+                                        <h:outputText value="#{message.label_list_projetos}" />
+                                        <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                                        <p:columnToggler datasource="dataTableProjetos" trigger="toggler" />
+                                    </f:facet>
+                                    
+                                    <p:column headerText="#{message.label_coluna_selecione}" style="width:60px;text-align:center">
+                                        <p:commandButton process="dataTableProjetos" update=":form:pnlCadastroProjetos, :form:dataTableProjetos" icon="ui-icon-close">
+                                            <f:setPropertyActionListener value="#{projeto}" target="#{contractBean.projeto}"></f:setPropertyActionListener>
+                                            <f:actionListener binding="#{contractBean.removeProject(event)}"></f:actionListener>
+                                        </p:commandButton>
+                                    </p:column>                                    
+
+                                    <p:column headerText="#{message.label_identificacao}" width="20">
+                                        <h:outputText value="#{projeto.id}" />
+                                    </p:column>
+
+                                    <p:column headerText="#{message.label_nome_projeto}">
+                                        <h:outputText value="#{projeto.nomeProjeto}" />
+                                    </p:column>
+
+                                    <p:column headerText="#{message.label_data_inicio_projeto}" width="100">
+                                        <h:outputText value="#{projeto.dtInicio}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="#{message.label_data_fim_projeto}" width="100">
+                                        <h:outputText value="#{projeto.dtFim}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="#{message.label_status_projeto}">
+                                        <h:outputText value="#{projeto.statusProject}">                           
+                                        </h:outputText>
+                                    </p:column>   
+
+                                </p:dataTable> 
+
+                                <!-- -->
+
+                                <p:commandButton id="btnAdicionarProjeto" value="#{message.label_botao_adicionar_projeto}" onclick="PF('dlgBuscaProjeto').show();">
+
+                                </p:commandButton>   
+                                
+
+                            </p:fieldset>
+
+                            <f:verbatim>                            
+                                <br />                            
+                            </f:verbatim>
+                            
+                        </p:panel>
+                        
+                        <p:toolbar id="toolbarCadastroContrato">  
+                            
+                            <f:facet name="left">
+                                <p:commandButton id="btnCadastrarContrato" value="#{message.label_botao_inserir_contrato}" action="#{contractBean.saveContract(contract)}" update="pnlCadastroContratos, dataTableContratos, toolbarCadastroContrato">
+                                </p:commandButton>
+                            </f:facet>
+ 
+                            <f:facet name="right">                                
+                                <p:commandButton value="#{message.label_botao_limpar}"  resetValues="true" disabled="#{contractBean.contrato.id != null}">
+                                    <!-- <f:ajax render="@all" resetValues="true" />  -->
+                                    <p:ajax update="pnlCadastroContratos" resetValues="true" />
+                                </p:commandButton>   
+                            </f:facet>
+
+                        </p:toolbar>
+                        
+                        <f:verbatim>                            
+                            <br />                            
+                        </f:verbatim>
+
+                        <p:dataTable emptyMessage="#{message.label_sem_registro}" id="dataTableContratos" var="contrato" value="#{contractBean.contratos}"
+                                     rows="4"
+                                     paginator="true" 
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                                     rowsPerPageTemplate="5,10,15" 
+                                     > 
+                            
+                            <f:facet name="{Exporters}">
+                                <h:commandLink>
+                                    <p:graphicImage name="/resources/images/excel.png" width="24"/>
+                                    <p:dataExporter type="xls" target="dataTableContratos" fileName="export" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/resources/images/pdf.png" width="24"/>
+                                    <p:dataExporter type="pdf" target="dataTableContratos" fileName="export"/>
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/resources/images/csv.png" width="24"/>
+                                    <p:dataExporter type="csv" target="dataTableContratos" fileName="export" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/resources/images/xml.png" width="24"/>
+                                    <p:dataExporter type="xml" target="dataTableContratos" fileName="export" />
+                                </h:commandLink>
+                            </f:facet>
+                            
+                            <f:facet name="header">
+                                <h:outputText value="#{message.label_list_contratos}" />
+                                <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                                <p:columnToggler datasource="dataTableContratos" trigger="toggler" />
+                            </f:facet>
+
+                            <p:column headerText="#{message.label_coluna_selecione}" style="width:60px;text-align:center">
+                                <p:commandButton ajax="true" action="#{contractBean.editContract(event)}" process="dataTableContratos" update=":form:pnlCadastroContratos, :form:toolbarCadastroContrato" icon="ui-icon-pencil">
+                                        <f:setPropertyActionListener value="#{contrato}" target="#{contractBean.contrato}"></f:setPropertyActionListener>
+                                        <f:setPropertyActionListener value="#{contrato.idCustomer}" target="#{contractBean.cliente}"></f:setPropertyActionListener>                            
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column headerText="#{message.label_identificacao}" width="20">
+                                <h:outputText value="#{contrato.id}" />
+                            </p:column>
+
+                            <p:column headerText="#{message.label_vigencia_inicial}" width="120">
+                                <h:outputText value="#{contrato.dtInicio}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="#{message.label_vigencia_final}" width="120">
+                                <h:outputText value="#{contrato.dtFim}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="#{message.label_cliente_contrato_pessoa_fisica}" filterBy="#{contrato.idCustomer.nomePF}" filterMatchMode="contains">
+                                <h:outputText value="#{contrato.idCustomer.nomePF}">                           
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="#{message.label_cliente_contrato_pessoa_juridica}" filterBy="#{contrato.idCustomer.nomeFantasia}" filterMatchMode="contains">
+                                <h:outputText value="#{contrato.idCustomer.nomeFantasia}">                        
+                                </h:outputText>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <!-- Fim Painel Cadastro do Contrato -->
+
+                    </h:form>
+
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>

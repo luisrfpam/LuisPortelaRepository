@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title><h:outputText value="#{message.label_titulo_pagina_usuario}"></h:outputText></title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+            
+            <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+            <h:outputStylesheet library="css" name="newtheme.css"></h:outputStylesheet>
+            
+            <p:layout fullPage="true">
+ 
+                <p:layoutUnit position="north" size="105" >
+                    <h:form id="formMenu" onkeypress="if (event.keyCode == 13) { return false; }"> 
+
+                        <h:graphicImage value="/resources/images/logo-easa.png" height="50" ></h:graphicImage>
+
+                        <p:menubar>
+                                <p:submenu label="Cadastro">                        
+                                    <p:menuitem value="Usuário" url="/register/user.jsf" />                        
+                                    <p:menuitem value="Projeto" url="/register/project.jsf" />
+                                    <p:menuitem value="Contrato" url="/register/contract.jsf" />
+                                    <p:menuitem value="Funcionário" url="/register/worker.jsf" />
+                                    <p:menuitem value="Cliente" url="/register/customer.jsf" />                       
+                                    <p:menuitem value="Turno" url="/register/shift.jsf" />    
+                                    <p:menuitem value="Cargo" url="/register/role.jsf" />    
+                                    <p:menuitem value="Tipo Embarcação" url="/register/ship.jsf" /> 
+                                </p:submenu>
+
+                                <p:menuitem value="Importações de Dados" url="/import/import.jsf" />                         
+
+                                <p:submenu label="Operações">
+                                    <p:menuitem value="Projetos" url="/operation/operation-project.jsf" />                        
+                                </p:submenu>
+
+                                <p:submenu label="Relatórios">
+
+                                </p:submenu>    
+                                
+                                <p:submenu label="Outros Cadastros">                        
+                                    <p:menuitem value="Atividades" url="/register/activite.jsf" />                        
+                                    <p:menuitem value="Elemento" url="/register/element.jsf" />                        
+                                    <p:menuitem value="Peça" url="/register/part.jsf" />
+                                    <p:menuitem value="Espaço" url="/register/space.jsf" />
+                                    <p:menuitem value="Bordo" url="/register/edge.jsf" />
+                                    <p:menuitem value="Posição" url="/register/position.jsf" />                       
+                                    <p:menuitem value="Região" url="/register/region.jsf" />    
+                                    <p:menuitem value="Tipo Solda" url="/register/weldingType.jsf" />    
+                                    <p:menuitem value="Serviço de Solda" url="/register/weldingService.jsf" /> 
+                                </p:submenu>
+
+                                <f:facet name="options">
+                                    <p:commandButton immediate="true" id="btnLogout" action="#{loginBean.doLogout()}" value="Logout" icon="ui-icon-extlink" />
+                                </f:facet>
+                        </p:menubar>
+
+                    </h:form>                        
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="150" header="#{message.label_header_layout_unit_left}" resizable="true" closable="true" collapsible="true">
+
+                </p:layoutUnit>
+
+                <!--
+
+                <p:layoutUnit position="east" size="240" header="#{message.label_header_layout_unit_right}" resizable="true" closable="true" collapsible="true" effect="drop">
+
+                    <h:form id="formEast" onkeypress="if (event.keyCode == 13) { return false; }">
+                        <p:calendar id="inline" mode="inline" />
+                    </h:form>   
+
+                </p:layoutUnit>
+
+                -->
+
+                <p:layoutUnit position="center">
+                    
+                    <h:form id="form" onkeypress="if (event.keyCode == 13) { return false; }">               
+                               
+                        <p:growl id="msgsGrowl" showDetail="true" autoUpdate="true" for="msgsGrowl"/>
+
+                        <c:set var="user" value="#{userBean.usuario}" />
+                        <c:set var="controller" value="#{userBean}" />
+
+                        <!-- Início Painel Cadastro do Usuário -->
+
+                        <p:panel id="pnlCadastroUsuarios" header="#{message.label_header_pnl_cadastro_usuario}" style="margin-bottom:20px;">
+
+                            <p:focus context="pnlCadastroUsuarios"/>
+
+                            <h:panelGrid id="pnlGridCadastroUsuarios" columns="3" cellpadding="10" >
+
+                                <p:outputLabel id="lblNome" for="textNome" value="#{message.label_nome_usuario}"></p:outputLabel>
+                                <p:inputText maxlength="255" size="50" id="textNome" value="#{userBean.usuario.nomeUsuario}" required="true" requiredMessage="#{message.label_required_nome_usuario}">
+                                    <f:validateLength minimum="20" maximum="255" />
+                                    <p:ajax update="msgNome" event="keyup" />
+                                </p:inputText>                        
+                                <p:message id="msgNome" for="textNome" showDetail="true" />                      
+
+                                <p:outputLabel id="lblCPF" for="textCPF" value="#{message.label_cpf_usuario}"></p:outputLabel>
+                                <p:inputMask id="textCPF" value="#{userBean.usuario.cpf}" mask="999.999.999-99" required="true" requiredMessage="#{message.label_required_cpf_usuario}"></p:inputMask>                     
+                                <p:message for="textCPF" showDetail="true" />    
+
+                                <p:outputLabel for="textNumeroTelefone" id="lblNumeroTelefone" value="#{message.label_numero_telefone}"></p:outputLabel>
+                                <p:inputMask id="textNumeroTelefone" value="#{userBean.usuario.numeroTelefone}" mask="(99) 9999-9999"></p:inputMask>                     
+                                <p:message for="textNumeroTelefone" showDetail="true" /> 
+
+                                <p:outputLabel id="lblNumeroCelular" for="textNumeroCelular" value="#{message.label_numero_celular}"></p:outputLabel>
+                                <p:inputMask id="textNumeroCelular" value="#{userBean.usuario.numeroCelular}" mask="(99) 99999-9999"></p:inputMask>                     
+                                <p:message for="textNumeroCelular" showDetail="true"/> 
+
+                                <p:outputLabel id="lblEmail" for="textEmail" value="#{message.label_email}"></p:outputLabel>
+                                <p:inputText maxlength="255" size="50" id="textEmail" value="#{userBean.usuario.email}" required="true" requiredMessage="#{message.label_required_email_usuario}" validator="custom.emailValidator"></p:inputText>                        
+                                <p:message for="textEmail" showDetail="true" /> 
+
+                                <p:outputLabel id="lblStatusUsuario" for="checkStatusUsuario" value="#{message.label_ativo_usuario}"></p:outputLabel>
+                                <p:selectBooleanCheckbox id="checkStatusUsuario" value="#{userBean.usuario.userStatus}"></p:selectBooleanCheckbox>                      
+                                <p:message for="checkStatusUsuario" showDetail="true" /> 
+
+                                <p:outputLabel id="lblLogin" for="textLogin" value="#{message.label_login_usuario}"></p:outputLabel>
+                                <p:inputText id="textLogin" value="#{userBean.usuario.userLogin}" required="true" requiredMessage="#{message.label_required_login_usuario}"></p:inputText>
+                                <p:message id="msgLogin" for="textLogin" showDetail="true" />                        
+
+                                <p:outputLabel id="lblPassword" for="textPassword" value="#{message.label_login_senha}"></p:outputLabel>
+                                <p:password id="textPassword" value="#{userBean.usuario.userPass}" feedback="true" promptLabel="#{message.label_required_senha_usuario}" required="true" requiredMessage="#{message.label_required_senha_usuario}"></p:password> 
+                                <p:message for="textPassword" showDetail="true" /> 
+
+                            </h:panelGrid>
+                            
+                        </p:panel>
+                        
+                        <p:toolbar id="toolbarCadastroUsuario"> 
+                            
+                            <f:facet name="left">
+                                <p:commandButton id="btnCadastrarUsuario" value="#{message.label_botao_inserir_usuario}" action="#{userBean.saveUser(user)}" update="pnlCadastroUsuarios, dataTableUsuarios, toolbarCadastroUsuario">
+                                </p:commandButton> 
+                            </f:facet>
+ 
+                            <f:facet name="right">                                
+                                <p:commandButton value="#{message.label_botao_limpar}"  resetValues="true" disabled="#{userBean.usuario.id != null}">
+                                    <!-- <f:ajax render="@all" resetValues="true" />  -->
+                                    <p:ajax update="pnlCadastroUsuarios" resetValues="true" />
+                                </p:commandButton>   
+                            </f:facet>
+
+                        </p:toolbar>
+                        
+                        <f:verbatim>                            
+                            <br />                            
+                        </f:verbatim>
+
+                        <p:dataTable emptyMessage="#{message.label_sem_registro}" id="dataTableUsuarios" var="usuario" value="#{userBean.usuarios}"
+                                     rows="4"
+                                     paginator="true" 
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                                     rowsPerPageTemplate="5,10,15"
+                                     >
+                            
+                            <f:facet name="{Exporters}">
+                                <h:commandLink>
+                                    <p:graphicImage name="/resources/images/excel.png" width="24"/>
+                                    <p:dataExporter type="xls" target="dataTableUsuarios" fileName="export" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/resources/images/pdf.png" width="24"/>
+                                    <p:dataExporter type="pdf" target="dataTableUsuarios" fileName="export"/>
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/resources/images/csv.png" width="24"/>
+                                    <p:dataExporter type="csv" target="dataTableUsuarios" fileName="export" />
+                                </h:commandLink>
+
+                                <h:commandLink>
+                                    <p:graphicImage name="/resources/images/xml.png" width="24"/>
+                                    <p:dataExporter type="xml" target="dataTableUsuarios" fileName="export" />
+                                </h:commandLink>
+                            </f:facet>
+                            
+                            <f:facet name="header">
+                                <h:outputText value="#{message.label_list_usuarios}" />
+                                <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                                <p:columnToggler datasource="dataTableUsuarios" trigger="toggler" />
+                            </f:facet>
+
+                            <p:column headerText="#{message.label_coluna_selecione}" style="width:60px;text-align:center">
+                                <p:commandButton process="dataTableUsuarios" update=":form:pnlCadastroUsuarios, :form:toolbarCadastroUsuario" icon="ui-icon-pencil">
+                                    <f:setPropertyActionListener value="#{usuario}" target="#{userBean.usuario}"></f:setPropertyActionListener>                                                        
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column headerText="#{message.label_identificacao}" width="20">
+                                <h:outputText value="#{usuario.id}" />
+                            </p:column>
+
+                            <p:column headerText="#{message.label_cpf_usuario}" width="200">
+                                <h:outputText value="#{usuario.cpf}" />
+                            </p:column>
+
+                            <p:column headerText="#{message.label_nome_usuario}" filterBy="#{usuario.nomeUsuario}" filterMatchMode="contains">
+                                <h:outputText value="#{usuario.nomeUsuario}" />
+                            </p:column>
+
+                            <p:column headerText="#{message.label_data_registro_usuario}" width="100">
+                                <h:outputText value="#{usuario.userRegistered}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <!-- Fim Painel Cadastro do Usuário -->
+
+                    </h:form>
+
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>

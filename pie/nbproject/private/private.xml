@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="5">
+        <file>
+            <url>src/br/org/transportar/services/ProjectService.java</url>
+            <bookmark id="3">
+                <name/>
+                <line>0</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>WebContent/register/shift.xhtml</url>
+            <bookmark id="1">
+                <name/>
+                <line>208</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/workspace/pie/src/br/org/transportar/services/ShipTypeService.java</file>
+            <file>file:/C:/workspace/pie/src/br/org/transportar/entities/Tbshiptype.java</file>
+            <file>file:/C:/workspace/pie/src/br/org/transportar/facade/ShiftFacade.java</file>
+            <file>file:/C:/workspace/pie/src/br/org/transportar/entities/Tbcontract.java</file>
+            <file>file:/C:/workspace/pie/src/br/org/transportar/messages/messages_pt_BR.properties</file>
+            <file>file:/C:/workspace/pie/src/br/org/transportar/services/ShiftService.java</file>
+            <file>file:/C:/workspace/pie/src/br/org/transportar/controllers/UserBean.java</file>
+            <file>file:/C:/workspace/pie/src/br/org/transportar/facade/ShipTypeFacade.java</file>
+            <file>file:/C:/workspace/pie/src/br/org/transportar/services/UserService.java</file>
+            <file>file:/C:/workspace/pie/src/br/org/transportar/facade/UserFacade.java</file>
+            <file>file:/C:/workspace/pie/src/br/org/transportar/entities/Tbshift.java</file>
+            <file>file:/C:/workspace/pie/src/br/org/transportar/controllers/ContractBean.java</file>
+            <file>file:/C:/workspace/pie/src/br/org/transportar/controllers/ShipTypeBean.java</file>
+            <file>file:/C:/workspace/pie/src/br/org/transportar/facade/ContractFacade.java</file>
+            <file>file:/C:/workspace/pie/WebContent/register/contract.xhtml</file>
+            <file>file:/C:/workspace/pie/src/br/org/transportar/dao/ContractDAO.java</file>
+        </group>
+    </open-files>
+</project-private>

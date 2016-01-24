@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title><h:outputText value="#{message.label_titulo_pagina_operacao_projeto}"></h:outputText></title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+            
+            <p:dialog modal="true" id="dialogImportServico" widgetVar="dlgImportServico" header="#{message.label_dialog_import_solda}" height="500" resizable="true" showEffect="clip" hideEffect="clip">
+
+                <h:form id="formDialogImportServico">
+
+                    <p:dataTable emptyMessage="#{message.label_sem_registro}" id="dataTableImportServicoEncontrados" var="servicosImport" value="#{operationProjectBean.lancamentosServicosImport}"
+                                rows="50"
+                                paginator="true" 
+                                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"                                     
+                                paginatorAlwaysVisible="true"
+                                >
+                       <p:column headerText="#{message.label_import_projeto}" filterBy="#{servicosImport.nomeProjeto}" filterMatchMode="contains">
+                           <h:outputText value="#{servicosImport.nomeProjeto}" />
+                       </p:column>    
+                        
+                        <p:column headerText="#{message.label_import_bloco}" filterBy="#{servicosImport.descricaoBloco}" filterMatchMode="contains">
+                           <h:outputText value="#{servicosImport.descricaoBloco}" />
+                       </p:column> 
+                        
+                        <p:column headerText="#{message.label_import_descricao}" filterBy="#{servicosImport.descricaoCaverna}" filterMatchMode="contains">
+                           <h:outputText value="#{servicosImport.descricaoCaverna}" />
+                       </p:column> 
+                        
+                        <p:column headerText="#{message.label_import_bordo}" filterBy="#{servicosImport.idBordo}" filterMatchMode="contains">
+                           <h:outputText value="#{servicosImport.idBordo}" />
+                       </p:column> 
+                        
+                        <p:column headerText="#{message.label_import_regiao}" filterBy="#{servicosImport.idRegiao}" filterMatchMode="contains">
+                           <h:outputText value="#{servicosImport.idRegiao}" />
+                       </p:column> 
+                        
+                        <p:column headerText="#{message.label_import_tipo_solda}" filterBy="#{servicosImport.idTipoSolda}" filterMatchMode="contains">
+                           <h:outputText value="#{servicosImport.idTipoSolda}" />
+                       </p:column> 
+                        
+                        <p:column headerText="#{message.label_import_posicao}" filterBy="#{servicosImport.idPosicao}" filterMatchMode="contains">
+                           <h:outputText value="#{servicosImport.idPosicao}" />
+                       </p:column> 
+                        
+                        <p:column headerText="#{message.label_import_espaco}" filterBy="#{servicosImport.idEspaco}" filterMatchMode="contains">
+                           <h:outputText value="#{servicosImport.idEspaco}" />
+                       </p:column> 
+                       
+                       <p:column headerText="#{message.label_import_comprimento}">
+                           <h:outputText value="#{servicosImport.valorComprimento}" />
+                       </p:column>                        
+                        
+                       <p:column headerText="#{message.label_import_quantidade}">
+                           <h:outputText value="#{servicosImport.qtdUtilizado}" />
+                       </p:column>                       
+
+                    </p:dataTable>
+
+                </h:form>
+
+            </p:dialog>
+            
+            <p:dialog modal="true" id="dialogImportMontagem" widgetVar="dlgImportMontagem" header="#{message.label_dialog_import_montagem}" height="500" resizable="true" showEffect="clip" hideEffect="clip">
+
+                <h:form id="formDialogImportMontagem">
+
+                    <p:dataTable emptyMessage="#{message.label_sem_registro}" id="dataTableImportMontagemEncontrados" var="montagensImport" value="#{operationProjectBean.lancamentosElementosMontagensImport}"
+                                rows="50"
+                                paginator="true" 
+                                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                paginatorAlwaysVisible="true"
+                                >
+                       <p:column headerText="#{message.label_import_bloco}" filterBy="#{montagensImport.idBloco}" filterMatchMode="contains">
+                           <h:outputText value="#{montagensImport.idBloco}" />
+                       </p:column>    
+                        
+                       <p:column headerText="#{message.label_import_elemento}" filterBy="#{montagensImport.idElemento}" filterMatchMode="contains">
+                           <h:outputText value="#{montagensImport.idElemento}" />
+                       </p:column> 
+                        
+                       <p:column headerText="#{message.label_import_peso}">
+                           <h:outputText value="#{montagensImport.pesoPeca}" />
+                       </p:column>     
+                        
+                       <!--
+                       <p:column headerText="#{message.label_import_epcg}" filterBy="#{montagensImport.isEPCG}" filterMatchMode="contains">
+                           <h:outputText value="#{montagensImport.isEPCG}" />
+                       </p:column> 
+                       
+                       <p:column headerText="#{message.label_import_pcpp}" filterBy="#{montagensImport.isPCPP}" filterMatchMode="contains">
+                           <h:outputText value="#{montagensImport.isPCPP}" />
+                       </p:column>
+                       
+                       icon="ui-icon-pencil"
+                       -->
+                        
+                       <p:column style="width:150px;text-align:center" headerText="#{message.label_import_epcg_check}">
+                           <p:commandButton value="check" disabled="#{montagensImport.isEPCG}" action="#{operationProjectBean.checkLancamentoMontagemEPCG(true)}" process="dataTableImportMontagemEncontrados" update=":formDialogImportMontagem:dataTableImportMontagemEncontrados">
+                               <f:setPropertyActionListener value="#{montagensImport}" target="#{operationProjectBean.lancamentoElementoMontagemImport}"></f:setPropertyActionListener>                                
+                           </p:commandButton>
+                           <p:commandButton value="no check" disabled="#{!montagensImport.isEPCG}" action="#{operationProjectBean.checkLancamentoMontagemEPCG(false)}" process="dataTableImportMontagemEncontrados" update=":formDialogImportMontagem:dataTableImportMontagemEncontrados">
+                               <f:setPropertyActionListener value="#{montagensImport}" target="#{operationProjectBean.lancamentoElementoMontagemImport}"></f:setPropertyActionListener>                                
+                           </p:commandButton>
+                       </p:column> 
+                       
+                       <p:column style="width:150px;text-align:center" headerText="#{message.label_import_pcpp_check}">
+                           <p:commandButton value="check" disabled="#{montagensImport.isPCPP}" action="#{operationProjectBean.checkLancamentoMontagemPCPP(true)}" process="dataTableImportMontagemEncontrados" update=":formDialogImportMontagem:dataTableImportMontagemEncontrados">
+                               <f:setPropertyActionListener value="#{montagensImport}" target="#{operationProjectBean.lancamentoElementoMontagemImport}"></f:setPropertyActionListener>                                
+                           </p:commandButton>
+                           <p:commandButton value="no check" disabled="#{!montagensImport.isPCPP}" action="#{operationProjectBean.checkLancamentoMontagemPCPP(false)}" process="dataTableImportMontagemEncontrados" update=":formDialogImportMontagem:dataTableImportMontagemEncontrados">
+                               <f:setPropertyActionListener value="#{montagensImport}" target="#{operationProjectBean.lancamentoElementoMontagemImport}"></f:setPropertyActionListener>                                
+                           </p:commandButton>
+                       </p:column>
+
+                    </p:dataTable>
+
+                </h:form>
+
+            </p:dialog>
+            
+            <p:dialog modal="true" id="dialogImportCorte" widgetVar="dlgImportCorte" header="#{message.label_dialog_import_corte}" height="500" resizable="true" showEffect="clip" hideEffect="clip">
+
+                <h:form id="formDialogImportCorte">
+
+                    <p:dataTable emptyMessage="#{message.label_sem_registro}" id="dataTableImportCorteEncontrados" var="cortesImport" value="#{operationProjectBean.lancamentosElementosCortesImport}"
+                                rows="50"
+                                paginator="true" 
+                                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"                                     
+                                paginatorAlwaysVisible="true"
+                                >
+                        <p:column headerText="#{message.label_import_projeto}" filterBy="#{cortesImport.nomeProjeto}" filterMatchMode="contains">
+                           <h:outputText value="#{cortesImport.nomeProjeto}" />
+                       </p:column>    
+                        
+                       <p:column headerText="#{message.label_import_peca}">
+                           <h:outputText value="#{cortesImport.idPeca}" />
+                       </p:column>
+                        
+                       <p:column headerText="#{message.label_import_espessura}">
+                           <h:outputText value="#{cortesImport.valorEsp}" />
+                       </p:column>
+                        
+                       <p:column headerText="#{message.label_import_quantidade}">
+                           <h:outputText value="#{cortesImport.qtUtilizado}" />
+                       </p:column>
+                        
+                       <p:column headerText="#{message.label_import_peso_peca}">
+                           <h:outputText value="#{cortesImport.pesoPeca}" />
+                       </p:column>
+                        
+                       <p:column headerText="#{message.label_import_data}">
+                           <h:outputText value="#{cortesImport.dtRealizadoCorte}">
+                               <f:convertDateTime pattern="dd/MM/yyyy"/>
+                           </h:outputText>
+                       </p:column>
+
+                    </p:dataTable>
+
+                </h:form>
+
+            </p:dialog>
+            
+            <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+            <h:outputStylesheet library="css" name="newtheme.css"></h:outputStylesheet>
+            
+            <p:layout fullPage="true">
+ 
+                <p:layoutUnit position="north" size="105" >
+                    <h:form id="formMenu" onkeypress="if (event.keyCode == 13) { return false; }"> 
+
+                        <h:graphicImage value="/resources/images/logo-easa.png" height="50" ></h:graphicImage>
+
+                        <p:menubar>
+                                <p:submenu label="Cadastro">                        
+                                    <p:menuitem value="Usuário" url="/register/user.jsf" />                        
+                                    <p:menuitem value="Projeto" url="/register/project.jsf" />
+                                    <p:menuitem value="Contrato" url="/register/contract.jsf" />
+                                    <p:menuitem value="Funcionário" url="/register/worker.jsf" />
+                                    <p:menuitem value="Cliente" url="/register/customer.jsf" />                       
+                                    <p:menuitem value="Turno" url="/register/shift.jsf" />    
+                                    <p:menuitem value="Cargo" url="/register/role.jsf" />    
+                                    <p:menuitem value="Tipo Embarcação" url="/register/ship.jsf" /> 
+                                </p:submenu>
+
+                                <p:menuitem value="Importações de Dados" url="/import/import.jsf" />                         
+
+                                <p:submenu label="Operações">
+                                    <p:menuitem value="Projetos" url="/operation/operation-project.jsf" />                        
+                                </p:submenu>
+
+                                <p:submenu label="Relatórios">
+
+                                </p:submenu>    
+                                
+                                <p:submenu label="Outros Cadastros">                        
+                                    <p:menuitem value="Atividades" url="/register/activite.jsf" />                        
+                                    <p:menuitem value="Elemento" url="/register/element.jsf" />                        
+                                    <p:menuitem value="Peça" url="/register/part.jsf" />
+                                    <p:menuitem value="Espaço" url="/register/space.jsf" />
+                                    <p:menuitem value="Bordo" url="/register/edge.jsf" />
+                                    <p:menuitem value="Posição" url="/register/position.jsf" />                       
+                                    <p:menuitem value="Região" url="/register/region.jsf" />    
+                                    <p:menuitem value="Tipo Solda" url="/register/weldingType.jsf" />    
+                                    <p:menuitem value="Serviço de Solda" url="/register/weldingService.jsf" /> 
+                                </p:submenu>
+
+                                <f:facet name="options">
+                                    <p:commandButton immediate="true" id="btnLogout" action="#{loginBean.doLogout()}" value="Logout" icon="ui-icon-extlink" />
+                                </f:facet>
+                        </p:menubar>
+
+                    </h:form>                        
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="150" header="#{message.label_header_layout_unit_left}" resizable="true" closable="true" collapsible="true">
+
+                </p:layoutUnit>
+
+                <!--
+                
+                <p:layoutUnit position="east" size="240" header="#{message.label_header_layout_unit_right}" resizable="true" closable="true" collapsible="true" effect="drop">
+
+                    <h:form id="formEast" onkeypress="if (event.keyCode == 13) { return false; }">
+                        <p:calendar id="inline" mode="inline" />
+                    </h:form>   
+
+                </p:layoutUnit>
+                
+                -->
+
+                <p:layoutUnit position="center">
+                    
+                    <h:form id="form" onkeypress="if (event.keyCode == 13) { return false; }">                
+                               
+                        <p:growl id="msgsGrowl" showDetail="true" autoUpdate="true" for="msgsGrowl"/>
+
+                        <c:set var="project" value="#{projectBean.projeto}" />
+                        <c:set var="controller" value="#{projectBean}" />
+
+                        <!-- Início Painel Cadastro do ImportLancamentos -->
+
+                        <p:panel id="pnlCadastroImportLancamentos" header="#{message.label_header_pnl_operacoes_projetos}" style="margin-bottom:20px;">
+
+                            <p:focus context="pnlCadastroImportLancamentos"/>
+                        
+                            <f:verbatim>                            
+                                <br />                            
+                            </f:verbatim>
+
+                            <p:dataTable emptyMessage="#{message.label_sem_registro}" id="dataTableImportLancamentos" var="projeto" value="#{projectBean.projetos}"
+                                         rows="10"
+                                         paginator="true" 
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="10,20,30,40,50" 
+                                        > 
+                                
+                                <p:column style="width:40px;text-align:center">
+                                    <p:commandButton delay="1000" update=":formDialogImportServico:dataTableImportServicoEncontrados" action="#{operationProjectBean.findLancamentosSoldas()}" id="btnServicoImport" value="S" onclick="PF('dlgImportServico').show();">
+                                        <f:setPropertyActionListener value="#{projeto}" target="#{operationProjectBean.projeto}"></f:setPropertyActionListener>
+                                    </p:commandButton> 
+                                </p:column> 
+
+                                <p:column style="width:40px;text-align:center">
+                                    <p:commandButton delay="1000" update=":formDialogImportCorte:dataTableImportCorteEncontrados" action="#{operationProjectBean.findLancamentosElementosCortes()}" id="btnElementoImportCorte" value="C" onclick="PF('dlgImportCorte').show();">
+                                        <f:setPropertyActionListener value="#{projeto}" target="#{operationProjectBean.projeto}"></f:setPropertyActionListener>
+                                    </p:commandButton> 
+                                </p:column> 
+
+                                <p:column style="width:40px;text-align:center">
+                                    <p:commandButton delay="1000" update=":formDialogImportMontagem:dataTableImportMontagemEncontrados" action="#{operationProjectBean.findLancamentosElementosMontagens()}" id="btnElementoImportMontagem" value="M" onclick="PF('dlgImportMontagem').show();">
+                                        <f:setPropertyActionListener value="#{projeto}" target="#{operationProjectBean.projeto}"></f:setPropertyActionListener>
+                                    </p:commandButton> 
+                                </p:column>
+
+                                <p:column headerText="#{message.label_identificacao}" width="20">
+                                    <h:outputText value="#{projeto.id}" />
+                                </p:column>
+
+                                <p:column headerText="#{message.label_nome_projeto}" filterBy="#{projeto.nomeProjeto}" filterMatchMode="contains">
+                                    <h:outputText value="#{projeto.nomeProjeto}" />
+                                </p:column>
+
+                                <p:column headerText="#{message.label_data_inicio_projeto}" width="100">
+                                    <h:outputText value="#{projeto.dtInicio}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="#{message.label_data_fim_projeto}" width="100">
+                                    <h:outputText value="#{projeto.dtFim}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="#{message.label_status_projeto}" width="150" filterBy="#{projeto.statusProject}" filterMatchMode="contains">
+                                    <h:outputText value="#{projeto.statusProject}">                           
+                                    </h:outputText>
+                                </p:column>
+
+                            </p:dataTable>
+                            
+                        </p:panel>
+
+                        <!-- Fim Painel Cadastro do ImportLancamentos -->
+
+                    </h:form>
+
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>

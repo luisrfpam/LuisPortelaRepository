@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title><h:outputText value="#{message.label_titulo_pagina_cargo}"></h:outputText></title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+            
+            <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+            <h:outputStylesheet library="css" name="newtheme.css"></h:outputStylesheet>
+            
+            <p:layout fullPage="true">
+ 
+                <p:layoutUnit position="north" size="105" >
+                    <h:form id="formMenu" onkeypress="if (event.keyCode == 13) { return false; }"> 
+
+                        <h:graphicImage value="/resources/images/logo-easa.png" height="50" ></h:graphicImage>
+
+                        <p:menubar>
+                                <p:submenu label="Cadastro">                        
+                                    <p:menuitem value="Usuário" url="/register/user.jsf" />                        
+                                    <p:menuitem value="Projeto" url="/register/project.jsf" />
+                                    <p:menuitem value="Contrato" url="/register/contract.jsf" />
+                                    <p:menuitem value="Funcionário" url="/register/worker.jsf" />
+                                    <p:menuitem value="Cliente" url="/register/customer.jsf" />                       
+                                    <p:menuitem value="Turno" url="/register/shift.jsf" />    
+                                    <p:menuitem value="Cargo" url="/register/role.jsf" />    
+                                    <p:menuitem value="Tipo Embarcação" url="/register/ship.jsf" /> 
+                                </p:submenu>
+
+                                <p:menuitem value="Importações de Dados" url="/import/import.jsf" />                         
+
+                                <p:submenu label="Operações">
+                                    <p:menuitem value="Projetos" url="/operation/operation-project.jsf" />                        
+                                </p:submenu>
+
+                                <p:submenu label="Relatórios">
+
+                                </p:submenu>    
+                                
+                                <p:submenu label="Outros Cadastros">                        
+                                    <p:menuitem value="Atividades" url="/register/activite.jsf" />                        
+                                    <p:menuitem value="Elemento" url="/register/element.jsf" />                        
+                                    <p:menuitem value="Peça" url="/register/part.jsf" />
+                                    <p:menuitem value="Espaço" url="/register/space.jsf" />
+                                    <p:menuitem value="Bordo" url="/register/edge.jsf" />
+                                    <p:menuitem value="Posição" url="/register/position.jsf" />                       
+                                    <p:menuitem value="Região" url="/register/region.jsf" />    
+                                    <p:menuitem value="Tipo Solda" url="/register/weldingType.jsf" />    
+                                    <p:menuitem value="Serviço de Solda" url="/register/weldingService.jsf" /> 
+                                </p:submenu>
+
+                                <f:facet name="options">
+                                    <p:commandButton immediate="true" id="btnLogout" action="#{loginBean.doLogout()}" value="Logout" icon="ui-icon-extlink" />
+                                </f:facet>
+                        </p:menubar>
+
+                    </h:form>                        
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="150" header="#{message.label_header_layout_unit_left}" resizable="true" closable="true" collapsible="true">
+
+                </p:layoutUnit>
+
+                <!--
+
+                <p:layoutUnit position="east" size="240" header="#{message.label_header_layout_unit_right}" resizable="true" closable="true" collapsible="true" effect="drop">
+
+                    <h:form id="formEast" onkeypress="if (event.keyCode == 13) { return false; }">
+                        <p:calendar id="inline" mode="inline" />
+                    </h:form>   
+
+                </p:layoutUnit>
+
+                -->
+
+                <p:layoutUnit position="center">
+                    
+                    <h:form id="form" onkeypress="if (event.keyCode == 13) { return false; }">               
+                               
+                        <p:growl id="msgsGrowl" showDetail="true" autoUpdate="true" for="msgsGrowl"/>
+
+                        <c:set var="role" value="#{roleBean.cargo}" />
+                        <c:set var="controller" value="#{roleBean}" />
+
+                        <!-- Início Painel Cadastro do Cargo -->
+
+                        <p:panel id="pnlCadastroCargos" header="#{message.label_header_pnl_cadastro_cargo}" style="margin-bottom:20px;">
+
+                            <p:focus context="pnlCadastroCargos"/>
+
+                            <h:panelGrid id="pnlGridCadastroCargos" columns="3" cellpadding="10" >
+
+                                <p:outputLabel id="lblDescricao" for="textDescricao" value="#{message.label_descricao}"></p:outputLabel>
+                                <p:inputText maxlength="255" size="50" id="textDescricao" value="#{roleBean.cargo.descricao}" required="true" requiredMessage="#{message.label_required_nome_cargo}"></p:inputText>                        
+                                <p:message for="textDescricao" showDetail="true" />  
+
+                            </h:panelGrid>
+                            
+                        </p:panel>
+                        
+                        <p:toolbar id="toolbarCadastroCargo"> 
+                            
+                            <f:facet name="left">
+                                <p:commandButton id="btnCadastrarCargo" value="#{message.label_botao_inserir_cargo}" action="#{roleBean.saveRole(role)}" update="pnlCadastroCargos, dataTableCargos, toolbarCadastroCargo">
+                                </p:commandButton>
+                            </f:facet>
+ 
+                            <f:facet name="right">                                
+                                <p:commandButton value="#{message.label_botao_limpar}"  resetValues="true" disabled="#{roleBean.cargo.id != null}">
+                                    <!-- <f:ajax render="@all" resetValues="true" />  -->
+                                    <p:ajax update="pnlCadastroCargos" resetValues="true" />
+                                </p:commandButton>   
+                            </f:facet>
+
+                        </p:toolbar>
+                        
+                        <f:verbatim>                            
+                            <br />                            
+                        </f:verbatim>
+
+                        <p:dataTable emptyMessage="#{message.label_sem_registro}" id="dataTableCargos" var="cargo" value="#{roleBean.cargos}"
+                                     rows="4"
+                                     paginator="true" 
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                                     rowsPerPageTemplate="5,10,15" 
+                                     >
+                            
+                            <f:facet name="{Exporters}">
+                                
+                            </f:facet>
+                            
+                            <f:facet name="header">
+                                <h:outputText value="#{message.label_list_cargos}" />
+                                <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                                <p:columnToggler datasource="dataTableCargos" trigger="toggler" />
+                            </f:facet>
+
+                            <p:column headerText="#{message.label_coluna_selecione}" style="width:60px;text-align:center">
+                                <p:commandButton process="dataTableCargos" update=":form:pnlCadastroCargos, :form:toolbarCadastroCargo" icon="ui-icon-pencil">
+                                    <f:setPropertyActionListener value="#{cargo}" target="#{roleBean.cargo}"></f:setPropertyActionListener>                                                        
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column headerText="#{message.label_identificacao}" width="20">
+                                <h:outputText value="#{cargo.id}" />
+                            </p:column>
+
+                            <p:column headerText="#{message.label_descricao}" filterBy="#{cargo.descricao}" filterMatchMode="contains">
+                                <h:outputText value="#{cargo.descricao}" />
+                            </p:column>
+
+                        </p:dataTable>
+                        
+                        <p:commandButton value="Export as Excel">                            
+                            <p:dataExporter type="xls" target="dataTableCargos" fileName="export" />
+                        </p:commandButton>
+
+                        <p:commandButton value="Export as PDF">
+                            <p:dataExporter type="pdf" target="dataTableCargos" fileName="export"/>
+                        </p:commandButton>
+
+                        <p:commandButton value="Export as CSV">
+                            <p:dataExporter type="csv" target="dataTableCargos" fileName="export" />
+                        </p:commandButton>
+
+                        <p:commandButton value="Export as XML">
+                            <p:dataExporter type="xml" target="dataTableCargos" fileName="export" />
+                        </p:commandButton>
+
+                        <!-- Fim Painel Cadastro do Cargo -->
+
+                    </h:form>
+
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
